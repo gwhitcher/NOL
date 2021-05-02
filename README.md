@@ -29,21 +29,22 @@ NOL is an open source discord bot written using the [discord.js](https://discord
     
 ##Commands
 * !help - coming soon!
-* !level
-* !top
-* !wiki XYZ
-* !google XYZ
-* !youtube XYZ
-* !wow X Y Z
-* !redtube XYZ
-* !boobs
-* !butts
-* !prune X (admin only)
-* !cat
-* !dog
-* !gnews Y Z
-* !gtopnews XYZ
-* !todaysnews
-* !snews XYZ
+* !level - Display your level.
+* !top - Top users.
+* !wiki XYZ - Search Wikipedia.
+* !google XYZ - Search Google.
+* !youtube XYZ - Search YouTube.
+* !wow X Y Z - Search WoW.
+* !redtube XYZ - Search redtube. (NSFW ONLY)
+* !boobs - Random boobs picture. (NSFW ONLY)
+* !butts - Random butts picture. (NSFW ONLY)
+* !prune X - Delete posts (admin only)
+* !cat - Random cat picture.
+* !dog - Random dog picture.
+* !gnews Y Z - Google News search.  Query (required), Domain (optional)
+* !gtopnews Y Z - Search top news.  Query (required), Source (optional)
+* !todaysnews - Get todays top news.
+* !snews XYZ - Get top news from source.  Source (required)
+* !sources - List available sources by ID.
 
 ###[Learn more at georgewhitcher.com and the NOL project.](https://github.com/gwhitcher/NOL.git)

@@ -56,7 +56,6 @@ client.on('ready', () => {
             fs.existsSync(dir) || fs.mkdirSync(dir);
         }
     }
-
 });
 
 // messages
@@ -70,7 +69,7 @@ client.on('message', (message) => {
     twitchFunctions.load(message);
     adultFunctions.load(message);
     animalFunctions.load(message);
-    newsFunctions.load(message);
+    newsFunctions.load(message, client);
     randomFunctions.load(message);
 });
 
@@ -88,3 +87,8 @@ client.on('guildMemberRemove', (member) => {
 
 // token login
 client.login(token);
+
+//repeating functions
+setInterval(function(){ 
+    newsFunctions.scheduledNews(client);  
+}, 60000);

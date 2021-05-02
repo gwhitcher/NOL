@@ -20,5 +20,6 @@
     "random_dialogue": ["", ""],
 	"newsapi": "",
 	"newsapi_results_count": "",
-	"newsapi_topnews_count": ""
+	"newsapi_topnews_count": "",
+	"news_channel_id": ""
 }
