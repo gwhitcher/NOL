@@ -90,5 +90,6 @@ client.login(token);
 
 //repeating functions
 setInterval(function(){ 
-    newsFunctions.scheduledNews(client);  
+    newsFunctions.scheduledNews(client); 
+    adultFunctions.scheduledPosts(client);
 }, 60000);

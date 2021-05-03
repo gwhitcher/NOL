@@ -9,6 +9,10 @@
 	"cs_key": "",
 	"yt_key": "",
 	"nsfw": "",
+	"nsfw_times": [
+		{"hour": , "minute": 0},
+    	{"hour": , "minute": 0}
+	],
 	"mysql_host": "",
 	"mysql_user": "",
 	"mysql_pass": "",

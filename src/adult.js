@@ -3,13 +3,56 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-inner-declarations */
 /* eslint-disable indent */
+
+const { prefix, nsfw, nsfw_times } = require('../config.json');
+const https = require('https');
+const http = require('http');
+
 class Adult {
+    scheduledPosts(client) {
+        var date = new Date();
+        for (let i = 0; i < nsfw_times.length; i++) {
+            if (date.getHours() === nsfw_times[i].hour && date.getMinutes() === nsfw_times[i].minute) {
+                this.adultAPIQuery(client);
+            }
+        }
+    }
+
+    adultAPIQuery(client) {
+        //random boobs
+        const randomIntBoobs = Math.floor(Math.random() * 13000) + 1;
+        const urlBoobs = 'http://api.oboobs.ru/boobs/' + randomIntBoobs;
+        http.get(urlBoobs, res => {
+            let body = '';
+            res.on('data', data => {
+                body += data;
+            });
+            res.on('end', () => {
+                body = JSON.parse(body);
+                const adultImage = body[0]['preview'];
+                const adultImageURL = 'http://media.oboobs.ru/' + adultImage;
+                client.channels.get(nsfw).send(adultImageURL);
+            });
+        });
+
+        //random butts
+        const randomIntButts = Math.floor(Math.random() * 6800) + 1;
+        const urlButts = 'http://api.obutts.ru/butts/' + randomIntButts;
+        http.get(urlButts, res => {
+            let body = '';
+            res.on('data', data => {
+                body += data;
+            });
+            res.on('end', () => {
+                body = JSON.parse(body);
+                const adultImage = body[0]['preview'];
+                const adultImageURL = 'http://media.obutts.ru/' + adultImage;
+                client.channels.get(nsfw).send(adultImageURL);
+            });
+        });
+    }
+
     load(message) {
-        const { prefix, nsfw } = require('../config.json');
-        const https = require('https');
-        const http = require('http');
-
-
         // if bot exit
         if (message.author.bot) return;
 
@@ -43,7 +86,7 @@ class Adult {
             }
         }
 
-        // boobs search
+        // boobs random
         if (message.content.startsWith(prefix + 'boobs')) {
             if (nsfw === '') {
                 message.channel.send('NSFW ID missing');
@@ -65,7 +108,7 @@ class Adult {
             }
         }
 
-        // butts search
+        // butts random
         if (message.content.startsWith(prefix + 'butts')) {
             if (nsfw === '') {
                 message.channel.send('NSFW ID missing');
