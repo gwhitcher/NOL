@@ -25,8 +25,10 @@
 	"newsapi": "",
 	"newsapi_results_count": "",
 	"newsapi_topnews_count": "",
-	"news_channel_id": "",
-	"news_sources": ["", "", ""],
+	"news_sources": [
+		{"source": "", "channel": ""},
+		{"source": "", "channel": ""}
+	],
 	"news_times": [
 		{"hour": , "minute": },
     	{"hour": , "minute": }

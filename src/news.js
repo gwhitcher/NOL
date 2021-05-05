@@ -4,7 +4,7 @@
 /* eslint-disable no-inner-declarations */
 /* eslint-disable indent */
 
-const { prefix, newsapi, newsapi_results_count, newsapi_topnews_count, news_channel_id, news_sources, news_times } = require('../config.json');
+const { prefix, newsapi, newsapi_results_count, newsapi_topnews_count, news_sources, news_times } = require('../config.json');
 const https = require('https');
 
 class News {
@@ -20,7 +20,7 @@ class News {
     }
 
     newsAPIQuery(client, source) {
-        const url = 'https://newsapi.org/v2/top-headlines?sources=' + source + '&pageSize=' + newsapi_topnews_count + '&apiKey=' + newsapi;
+        const url = 'https://newsapi.org/v2/top-headlines?sources=' + source.source + '&pageSize=' + newsapi_topnews_count + '&apiKey=' + newsapi;
         https.get(url, res => {
             res.setEncoding('utf8');
             let body = '';
@@ -29,12 +29,11 @@ class News {
             });
             res.on('end', () => {
                 body = JSON.parse(body);
-                //console.log(body);
                 for (let i = 0; i < body.articles.length; i++) {
                     let title = body.articles[i].title + '\n';
                     let description = body.articles[i].description + '\n';
                     let url = body.articles[i].url;
-                    client.channels.get(news_channel_id).send(title + description + url)
+                    client.channels.get(source.channel).send(title + description + url)
                 }
             });
         });
@@ -72,7 +71,7 @@ class News {
                             let title = body.articles[i].title + '\n';
                             let description = body.articles[i].description + '\n';
                             let url = body.articles[i].url;
-                            client.channels.get(news_channel_id).send(title + description + url);
+                            message.reply(title + description + url);
                         }
                     });
                 });
@@ -107,7 +106,7 @@ class News {
                                 let title = body.articles[i].title + '\n';
                                 let description = body.articles[i].description + '\n';
                                 let url = body.articles[i].url;
-                                client.channels.get(news_channel_id).send(title + description + url);
+                                message.reply(title + description + url);
                             }
                         }
                     });
@@ -131,7 +130,7 @@ class News {
                         let title = body.articles[i].title + '\n';
                         let description = body.articles[i].description + '\n';
                         let url = body.articles[i].url;
-                        client.channels.get(news_channel_id).send(title + description + url);
+                        message.reply(title + description + url);
                     }
                 });
             });
@@ -157,8 +156,7 @@ class News {
                             let title = body.articles[i].title + '\n';
                             let description = body.articles[i].description + '\n';
                             let url = body.articles[i].url;
-                            //message.reply(title + description + url);
-                            client.channels.get(news_channel_id).send(title + description + url);
+                            message.reply(title + description + url);
                         }
                     });
                 });
@@ -182,7 +180,7 @@ class News {
                         content += body.sources[i].id + '\n';
                         //message.reply(title + description + url);
                     }
-                    client.channels.get(news_channel_id).send(content);
+                    message.reply(content);
                 });
             });
         }
