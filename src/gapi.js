@@ -53,11 +53,14 @@ class Gapi {
                     });
                     res.on('end', () => {
                         body = JSON.parse(body);
-                        for (let i = 0; i < body.items.length; i++) {
-                            let googleItem = 'VIDEO TITLE: ' + body.items[i].snippet.title + '\n';
-                            googleItem += 'VIDEO DESCRIPTION: ' + body.items[i].snippet.description + '\n';
-                            googleItem += 'VIDEO LINK: https://youtube.com/watch?v=' + body.items[i].id.videoId;
-                            message.channel.send(googleItem);
+                        console.log(body);
+                        if (body.items) {
+                            for (let i = 0; i < body.items.length; i++) {
+                                let googleItem = body.items[i].snippet.title + '\n';
+                                googleItem += body.items[i].snippet.description + '\n';
+                                googleItem += 'https://youtube.com/watch?v=' + body.items[i].id.videoId;
+                                message.channel.send(googleItem);
+                            }
                         }
                     });
                 });
