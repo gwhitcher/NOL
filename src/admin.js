@@ -3,7 +3,74 @@
 /* eslint-disable no-shadow */
 /* eslint-disable no-inner-declarations */
 /* eslint-disable indent */
+
+const modArray = [];
+const countsMod = {};
+
 class Admin {
+
+    /*
+    //test spam prevention
+    messageLimit(client, message) {
+        // if bot exit
+        if (message.author.bot) return;
+
+        //const modArray = [];
+        const messageArray = [];
+        //const countsMod = {};
+        let count = 3;
+        let time = 5;
+        let dateTime = new Date();
+        //console.log(dateTime);
+        dateTime.setSeconds(dateTime.getSeconds() - time);
+        let dateString = new Date(dateTime);
+        //console.log(dateString);
+        message.channel.fetchMessages({ limit: count }).then(messages => {
+            messages.forEach(function (messageItem) {
+                if (messageItem.createdAt >= dateString) {
+                    messageArray.push(messageItem.author.id);
+                }
+            });
+
+            //get count
+            let counts = {};
+            messageArray.forEach(function (x) {
+                counts[x] = (counts[x] || 0) + 1;
+            });
+            //console.log(counts);
+
+            //check for spam
+            let spam = false;
+            for (var item in counts) {
+                if (counts[item] >= count) {
+                    spam = true;
+                    modArray.push(item);
+                }
+            }
+            //console.log(modArray);
+
+            if(spam) {
+                message.channel.send('Please stop spamming.');
+            }
+
+            //get spam user count
+            modArray.forEach(function (spamCount) {
+                countsMod[spamCount] = (countsMod[spamCount] || 0) + 1;
+            });
+            console.log(countsMod);
+
+            //kick users
+            for (var modItem in countsMod) {
+                if (countsMod[modItem] >= count) {
+                    let member = message.guild.member(modItem);
+                    message.channel.send('User ' + member.displayName + ' has been kicked.');
+                    member.kick();
+                }
+            }
+        }).catch(console.error);
+    }
+    */
+
     load(message) {
         const { prefix } = require('../config.json');
 

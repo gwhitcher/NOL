@@ -14,6 +14,7 @@ class Logs {
 
         // get author
         const author = message.author.username;
+        author.replace("'", "");
 
         // create mysql connection
         const connection = mysql.createConnection({

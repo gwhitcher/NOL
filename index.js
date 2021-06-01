@@ -71,6 +71,7 @@ client.on('message', (message) => {
     animalFunctions.load(message);
     newsFunctions.load(message, client);
     randomFunctions.load(message);
+    adminFunctions.messageLimit(client, message);
 });
 
 // guild member join
@@ -85,11 +86,11 @@ client.on('guildMemberRemove', (member) => {
     guild.channels.find(channel => channel.name === 'general').send('Bye ' + member.user);
 });
 
-// token login
-client.login(token);
-
 //repeating functions
 setInterval(function(){ 
     newsFunctions.scheduledNews(client); 
     adultFunctions.scheduledPosts(client);
 }, 60000);
+
+// token login
+client.login(token);
