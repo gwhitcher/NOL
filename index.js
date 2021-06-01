@@ -71,7 +71,7 @@ client.on('message', (message) => {
     animalFunctions.load(message);
     newsFunctions.load(message, client);
     randomFunctions.load(message);
-    adminFunctions.messageLimit(client, message);
+    //adminFunctions.messageLimit(client, message);
 });
 
 // guild member join
