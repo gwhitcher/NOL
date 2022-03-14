@@ -21,6 +21,7 @@ class Random {
             message.channel.send(randomItem);
         }
 
+        /*
         // set name color
         if (message.content.startsWith(prefix + 'color')) {
             const searchQuery = message.content.replace(prefix + 'color ', '');
@@ -54,6 +55,7 @@ class Random {
                 }
             }
         }
+        */
     }
 }
 
