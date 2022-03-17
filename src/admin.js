@@ -8,6 +8,7 @@ const modArray = [];
 
 class Admin {
 
+    /*
     //test spam prevention
     messageLimit(client, message) {
         // if bot exit
@@ -68,6 +69,7 @@ class Admin {
             }
         }).catch(console.error);
     }
+    */
 
     load(message) {
         const { prefix } = require('../config.json');
