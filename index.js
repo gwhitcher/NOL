@@ -95,7 +95,7 @@ setInterval(function(){
 }, 60000);
 setInterval(function(){ 
     phpbbFunctions.forumPostUpdate(client);
-}, 30000);
+}, 35000);
 
 // token login
 client.login(token);
