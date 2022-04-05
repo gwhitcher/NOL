@@ -24,6 +24,7 @@ const Adult = require('./src/adult');
 const Animals = require('./src/animals');
 const Random = require('./src/random');
 const News = require('./src/news');
+const Phpbb = require('./src/phpbb');
 const fs = require('fs');
 
 // functions
@@ -38,6 +39,7 @@ const adultFunctions = new Adult();
 const animalFunctions = new Animals();
 const newsFunctions = new News();
 const randomFunctions = new Random();
+const phpbbFunctions = new Phpbb();
 
 
 // init
@@ -71,7 +73,7 @@ client.on('message', (message) => {
     animalFunctions.load(message);
     newsFunctions.load(message, client);
     randomFunctions.load(message);
-    adminFunctions.messageLimit(client, message);
+    //adminFunctions.messageLimit(client, message);
 });
 
 // guild member join
@@ -90,6 +92,7 @@ client.on('guildMemberRemove', (member) => {
 setInterval(function(){ 
     newsFunctions.scheduledNews(client); 
     adultFunctions.scheduledPosts(client);
+    phpbbFunctions.forumPostUpdate(client);
 }, 60000);
 
 // token login
