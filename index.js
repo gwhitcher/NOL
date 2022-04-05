@@ -92,10 +92,8 @@ client.on('guildMemberRemove', (member) => {
 setInterval(function(){ 
     newsFunctions.scheduledNews(client); 
     adultFunctions.scheduledPosts(client);
-}, 60000);
-setInterval(function(){ 
     phpbbFunctions.forumPostUpdate(client);
-}, 30001);
+}, 60000);
 
 // token login
 client.login(token);
