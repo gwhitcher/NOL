@@ -31,8 +31,6 @@ class Phpbb {
                             updated = updated.slice(0, -3);
                             let currentDateTime = new Date().toISOString();
                             currentDateTime = currentDateTime.slice(0, -8);
-                            console.log(updated);
-                            console.log(currentDateTime);
                             let author = entries[i].author['name'];
                             let link = entries[i].id;
                             let text = 'There is a new post by: ' + author + ' - ' + link;
