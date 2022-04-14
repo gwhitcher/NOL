@@ -6,14 +6,14 @@
 
 const Discord = require('discord.js');
 const { token, server_id, forum_feed, forum_channel } = require('../config.json');
-const https = require('https');
+const http = require('http');
 const xml2js = require('xml2js');
 
 class Phpbb {
 
     forumPostUpdate(client) {
         const url = forum_feed;
-            https.get(url, res => {
+            http.get(url, res => {
                 let body = '';
                 res.on('data', data => {
                     body += data;
