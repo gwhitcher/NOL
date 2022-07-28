@@ -13,14 +13,15 @@ class Phpbb {
 
     forumPostUpdate(client) {
         const url = forum_feed;
+        if (forum_feed) {
             http.get(url, res => {
                 let body = '';
                 res.on('data', data => {
                     body += data;
                 });
                 res.on('end', () => {
-                    xml2js.parseString(body, { explicitArray:false, mergeAttrs: true }, (err, result) => {
-                        if(err) {
+                    xml2js.parseString(body, { explicitArray: false, mergeAttrs: true }, (err, result) => {
+                        if (err) {
                             console.log(err);
                         }
                         let json = JSON.stringify(result, null, 4);
@@ -34,13 +35,14 @@ class Phpbb {
                             let author = entries[i].author['name'];
                             let link = entries[i].id;
                             let text = 'There is a new post by: ' + author + ' - ' + link;
-                            if(updated === currentDateTime) {
+                            if (updated === currentDateTime) {
                                 client.channels.get(forum_channel).send(text);
                             }
                         }
                     });
                 });
             });
+        }
     }
 }
 
