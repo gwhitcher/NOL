@@ -23,6 +23,9 @@ NOL is an open source discord bot written using the [discord.js](https://discord
     - [ ] [Create a project on the Google Cloud Console](https://console.cloud.google.com)
     - [ ] Choose API's & Services and activate Google Custom Search & YouTube.
     - [ ] A key will be provided.  Update your config.json with the provided key.
+- [ ] Run node `deploy-commands.js` to register your commands.
+- [ ] If you ever need to clean up your commands, run node `delete-commands.js` to delete your commands.
+- [ ] Start the app by running `node index.js`.
     
 ##Commands
 * !level - Display your level.
