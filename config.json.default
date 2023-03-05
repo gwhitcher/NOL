@@ -1,38 +1,19 @@
 {
-	"server_id": "",
-	"prefix": "!",
-	"token": "",
-	"top_count": "5",
-	"google_count": "1",
-	"youtube_count": "1",
-	"cs_cx_id": "",
-	"cs_key": "",
-	"yt_key": "",
-	"nsfw": "",
-	"nsfw_times": [
-		{"hour": , "minute": 0},
-    	{"hour": , "minute": 0}
-	],
-	"mysql_host": "",
-	"mysql_user": "",
-	"mysql_pass": "",
-	"mysql_db": "",
-	"wow_key": "",
-	"wow_secret": "",
-    "twitch_client_id": "",
-    "twitch_channel": "",
-    "random_dialogue": ["", ""],
-	"newsapi": "",
-	"newsapi_results_count": "",
-	"newsapi_topnews_count": "",
-	"news_sources": [
-		{"source": "", "channel": ""},
-		{"source": "", "channel": ""}
-	],
-	"news_times": [
-		{"hour": , "minute": },
-    	{"hour": , "minute": }
-	],
-	"forum_feed": "",
-	"forum_channel": ""
+    "clientId": "",
+    "guildId": "",
+    "token": "",
+    "nsfw": "",
+    "mysqlSettings": {
+        "connectionLimit": 10,
+        "host": "localhost",
+        "user": "",
+        "password": "",
+        "database": "discord-bot-nol"
+    },
+    "random_dialogue": [],
+    "google_count": "1",
+    "youtube_count": "1",
+    "cs_cx_id": "",
+    "cs_key": "",
+    "yt_key": ""
 }
