@@ -1,99 +1,62 @@
-/* eslint-disable no-unused-vars */
-/* eslint-disable brace-style */
-/* eslint-disable no-shadow */
-/* eslint-disable no-inner-declarations */
-/* eslint-disable indent */
 /*
-Discord BOT: Written by George Whitcher
+NOL2: Written by George Whitcher
 Website: georgewhitcher.com
-Repository: github.com/gwhitcher/discord-bot
+Repository: github.com/gwhitcher/NOL
 */
 
-// imports
-const Discord = require('discord.js');
-const { token, server_id } = require('./config.json');
-const client = new Discord.Client();
-const Logs = require('./src/logs');
-const Levels = require('./src/levels');
-const Admin = require('./src/admin');
-const Gapi = require('./src/gapi');
-const Wiki = require('./src/wiki');
-const Wow = require('./src/wow');
-const Twitch = require('./src/twitch');
-const Adult = require('./src/adult');
-const Animals = require('./src/animals');
-const Random = require('./src/random');
-const News = require('./src/news');
-const Phpbb = require('./src/phpbb');
-const fs = require('fs');
+// Require the necessary discord.js classes
+const fs = require('node:fs');
+const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { token } = require('./config.json');
+const { messageCount, log } = require('./assets/log');
 
-// functions
-const logFunctions = new Logs();
-const levelsFunctions = new Levels();
-const adminFunctions = new Admin();
-const googleFunctions = new Gapi();
-const wikiFunctions = new Wiki();
-const wowFunctions = new Wow();
-const twitchFunctions = new Twitch();
-const adultFunctions = new Adult();
-const animalFunctions = new Animals();
-const newsFunctions = new News();
-const randomFunctions = new Random();
-const phpbbFunctions = new Phpbb();
+// Create a new client instance
+const client = new Client({
+	intents: [
+		GatewayIntentBits.Guilds,
+		GatewayIntentBits.GuildMessages,
+		GatewayIntentBits.DirectMessages,
+		GatewayIntentBits.MessageContent
+	],
+	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+});
+client.commands = new Collection();
+const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
+for (const file of commandFiles) {
+	const command = require(`./commands/${file}`);
+	client.commands.set(command.data.name, command);
+}
 
 // init
-client.on('ready', () => {
-    console.log('Connected as ' + client.user.tag);
-
-    // setInterval( function() { twitchFunctions.twitchAlert(client); }, 500 );
-
-    // create folders for logs
-    const server = client.guilds.get(server_id);
-    for (let i = 0; i < server.channels.array().length; i++) {
-        const type = server.channels.array()[i].type;
-        if (type === 'text') {
-            const dirName = server.channels.array()[i].name;
-            const dir = 'logs/' + dirName;
-            fs.existsSync(dir) || fs.mkdirSync(dir);
-        }
-    }
+client.once('ready', () => {
+	console.log('Connected as ' + client.user.tag);
 });
 
-// messages
-client.on('message', (message) => {
-    logFunctions.load(message);
-    levelsFunctions.load(message);
-    adminFunctions.load(message);
-    googleFunctions.load(message);
-    wikiFunctions.load(message);
-    wowFunctions.load(message);
-    twitchFunctions.load(message);
-    adultFunctions.load(message);
-    animalFunctions.load(message);
-    newsFunctions.load(message, client);
-    randomFunctions.load(message);
-    //adminFunctions.messageLimit(client, message);
+// commands
+client.on('interactionCreate', async message => {
+
+	if (!message.isCommand()) return;
+
+	const command = client.commands.get(message.commandName);
+
+	if (!command) return;
+
+	try {
+		await command.execute(message);
+	} catch (error) {
+		console.error(error);
+		await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+	}
 });
 
-// guild member join
-client.on('guildMemberAdd', (member) => {
-    const guild = member.guild;
-    guild.channels.find(channel => channel.name === 'general').send('Welcome ' + member.user);
+client.on('messageCreate', async message => {
+	if (message.author.bot) return;
+
+	//log
+	messageCount(message);
+	log(message);
 });
 
-// guild member leave
-client.on('guildMemberRemove', (member) => {
-    const guild = member.guild;
-    guild.channels.find(channel => channel.name === 'general').send('Bye ' + member.user);
-});
-
-//repeating functions
-setInterval(function(){ 
-    newsFunctions.scheduledNews(client); 
-    adultFunctions.scheduledPosts(client);
-    phpbbFunctions.forumPostUpdate(client);
-}, 60000);
-
-// token login
+// login
 client.login(token);
