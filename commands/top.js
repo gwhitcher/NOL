@@ -11,6 +11,7 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(message) {
+
         // create mysql connection
         let connection = mysqlConnect();
 
@@ -24,19 +25,17 @@ module.exports = {
         }
 
         const number = message.options.getNumber('number') ?? 1;
-        const sql = 'SELECT * FROM message_count ORDER BY message_count DESC LIMIT ' + number + '';
+        const sql = 'SELECT * FROM message_count ORDER BY message_count DESC LIMIT ' + number;
         connection.query(sql, function (error, results) {
-
             if (error) throw error;
-
+            let topUsers = '';
             for (let i = 0; i < results.length; i++) {
-                const message_count = results[i].message_count;
-                const closest = levels.reduce(function (prev, curr) {
-                    return (Math.abs(curr - message_count) < Math.abs(prev - message_count) ? curr : prev);
+                let closest = levels.reduce(function (prev, curr) {
+                    return (Math.abs(curr - results[i].message_count) < Math.abs(prev - results[i].message_count) ? curr : prev);
                 });
-                const topUser = results[i].author + ' | Level ' + levels.indexOf(closest) + ' | ' + results[i].message_count + ' Messages';
-                message.reply(topUser);
+                topUsers += results[i].author + ' | Level ' + levels.indexOf(closest) + ' | ' + results[i].message_count + ' Messages \n';
             }
+            message.reply(topUsers);
         });
 
         //close the mysql connection

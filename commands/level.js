@@ -23,7 +23,7 @@ module.exports = {
         const sql = 'SELECT * FROM message_count WHERE author = "' + author + '"';
         connection.query(sql, function (error, results) {
             if (error) throw error;
-            const message_count = results[0].message_count;
+            let message_count = results[0].message_count;
             const closest = levels.reduce(function (prev, curr) {
                 return (Math.abs(curr - message_count) < Math.abs(prev - message_count) ? curr : prev);
             });
