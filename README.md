@@ -1,4 +1,4 @@
-##NOL - Discord Bot
+# NOL - Discord Bot
 *By George Whitcher*
 
 NOL is an open source discord bot written using the [discord.js](https://discord.js.org) library.
@@ -8,7 +8,7 @@ NOL is an open source discord bot written using the [discord.js](https://discord
 - [ ] [MySQL](https://www.mysql.com)
 - [ ] [git](https://git-scm.com)
 
-##Installation
+## Installation
 - [ ] Install all required files if you have not already.
 - [ ] Open git bash on the directory you would like to install NOL.
 - [ ] Run `git clone https://github.com/gwhitcher/NOL.git`
@@ -27,7 +27,7 @@ NOL is an open source discord bot written using the [discord.js](https://discord
 - [ ] If you ever need to clean up your commands, run node `delete-commands.js` to delete your commands.
 - [ ] Start the app by running `node index.js`.
     
-##Commands
+## Commands
 * /level - Display your level.
 * /top - Top users.
 * /wiki X - Search Wikipedia.
@@ -40,4 +40,4 @@ NOL is an open source discord bot written using the [discord.js](https://discord
 * /cat - Random cat picture.
 * /dog - Random dog picture.
 
-###[Learn more at georgewhitcher.com](https://github.com/gwhitcher/NOL.git)
+### [Learn more at georgewhitcher.com](https://github.com/gwhitcher/NOL.git)
