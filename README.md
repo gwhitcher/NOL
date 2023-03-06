@@ -33,11 +33,11 @@ NOL is an open source discord bot written using the [discord.js](https://discord
 * /wiki X - Search Wikipedia.
 * /google X - Search Google.
 * /youtube X - Search YouTube.
+* /cat - Random cat picture.
+* /dog - Random dog picture.
 * /redtube X - Search redtube. (NSFW ONLY)
 * /boobs - Random boobs picture. (NSFW ONLY)
 * /butts - Random butts picture. (NSFW ONLY)
 * /prune X - Delete posts (admin only)
-* /cat - Random cat picture.
-* /dog - Random dog picture.
 
 ### [Learn more at georgewhitcher.com](https://github.com/gwhitcher/NOL.git)
