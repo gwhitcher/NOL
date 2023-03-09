@@ -1,25 +1,20 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const https = require('https');
+const axios = require('axios');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('dog')
         .setDescription('Random dog picture.'),
     async execute(message) {
-
         const url = 'https://random.dog/woof.json';
-        https.get(url, res => {
-            res.setEncoding('utf8');
-            let body = '';
-            res.on('data', data => {
-                body += data;
-            });
-            res.on('end', () => {
-                body = JSON.parse(body);
-                const dogItem = body.url + '\n';
-                message.reply(dogItem);
-            });
-        });
-
+        (async () => {
+            try {
+                const response = await axios.get(url);
+                await message.reply(response.data.url.toString());
+            } catch (error) {
+                console.log(error.response);
+                await message.reply({ content: 'No response.', ephemeral: true });
+            }
+        })();
     },
 };

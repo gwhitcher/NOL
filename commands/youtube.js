@@ -1,6 +1,6 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
 const { yt_key, youtube_count } = require('../config.json');
-const https = require('https');
+const axios = require('axios');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -14,23 +14,20 @@ module.exports = {
     async execute(message) {
         const searchQuery = message.options.getString('search');
         const url = 'https://www.googleapis.com/youtube/v3/search?part=snippet&maxResults=' + youtube_count + '&q=' + searchQuery + '&key=' + yt_key;
-        https.get(url, res => {
-            res.setEncoding('utf8');
-            let body = '';
-            res.on('data', data => {
-                body += data;
-            });
-            res.on('end', () => {
-                body = JSON.parse(body);
-                if (body.items) {
-                    for (let i = 0; i < body.items.length; i++) {
-                        let googleItem = body.items[i].snippet.title + '\n';
-                        googleItem += body.items[i].snippet.description + '\n';
-                        googleItem += 'https://youtube.com/watch?v=' + body.items[i].id.videoId;
-                        message.reply(googleItem);
-                    }
+        (async () => {
+            try {
+                const response = await axios.get(url);
+                var data = response.data.items;
+                for (let i = 0; i < data.length; i++) {
+                    let googleItem = data[i].snippet.title + '\n';
+                    googleItem += data[i].snippet.description + '\n';
+                    googleItem += 'https://youtube.com/watch?v=' + data[i].id.videoId;
+                    await message.reply(googleItem);
                 }
-            });
-        });
+            } catch (error) {
+                console.log(error.response);
+                await message.reply({ content: 'No response.', ephemeral: true });
+            }
+        })();
     },
 };

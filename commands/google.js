@@ -25,7 +25,7 @@ module.exports = {
             let googleItem = res.data.items[i].title + '\n';
             googleItem += res.data.items[i].snippet + '\n';
             googleItem += res.data.items[i].link + '\n';
-            message.reply(googleItem);
+            await message.reply(googleItem);
         }
     },
 };

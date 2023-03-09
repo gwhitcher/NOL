@@ -25,7 +25,7 @@ NOL is an open source discord bot written using the [discord.js](https://discord
     - [ ] A key will be provided.  Update your config.json with the provided key.
 - [ ] Run node `deploy-commands.js` to register your commands.
 - [ ] If you ever need to clean up your commands, run node `delete-commands.js` to delete your commands.
-- [ ] Start the app by running `node index.js`.
+- [ ] Start the app by running `node app.js`.
     
 ## Commands
 * /level - Display your level.

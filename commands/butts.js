@@ -1,5 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
-const http = require('http');
+const axios = require('axios');
 const { nsfw } = require('../config.json');
 
 module.exports = {
@@ -9,18 +9,17 @@ module.exports = {
     async execute(message) {
         const randomIntButts = Math.floor(Math.random() * 6800) + 1;
         const urlButts = 'http://api.obutts.ru/butts/' + randomIntButts;
-        http.get(urlButts, res => {
-            let body = '';
-            res.on('data', data => {
-                body += data;
-            });
-            res.on('end', () => {
-                body = JSON.parse(body);
-                const adultImage = body[0]['preview'];
+        (async () => {
+            try {
+                const response = await axios.get(urlButts);
+                const adultImage = response.data[0]['preview'];
                 const adultImageURL = 'http://media.obutts.ru/' + adultImage;
-                message.client.channels.cache.get(nsfw).send(adultImageURL);
-            });
-        });
+                await message.client.channels.cache.get(nsfw).send(adultImageURL);
+            } catch (error) {
+                console.log(error.response);
+                await message.reply('No response.');
+            }
+        })();
         await message.reply({ content: 'Check NSFW!', ephemeral: true });
     },
 };

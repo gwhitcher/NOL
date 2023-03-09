@@ -5,7 +5,7 @@ module.exports = {
     data: new SlashCommandBuilder()
         .setName('level')
         .setDescription('Your level based on the amount of your messages.'),
-    async execute(message) {
+    execute(message) {
         // create mysql connection
         let connection = mysqlConnect();
 
