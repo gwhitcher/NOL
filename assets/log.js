@@ -1,6 +1,5 @@
 const mysql = require('mysql');
 const { mysqlConnect, mysqlClose } = require('../assets/mysql');
-const fs = require('fs');
 
 function messageCount(message) {
     let connection = mysqlConnect();
@@ -21,23 +20,25 @@ function messageCount(message) {
                 if (errorUpdate) throw errorUpdate;
             });
         }
+        mysqlClose(connection);
     });
-    mysqlClose(connection);
 }
 
 function log(message) {
+    let connection = mysqlConnect();
     const channel = message.channel.id;
-    const messageContent = message.content;
+    const messageContent = encodeURI(message.content);
     const author = message.author.username + '#' + message.author.discriminator;
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
     const dateTime = date + ' ' + time;
-    const insertSql = 'INSERT INTO log (author, channel, message, created_at) VALUES (\'' + author + '\', \'' + channel + '\', \'' + messageContent + '\', \'' + dateTime + '\')';
-    connection.query(insertSql, function (errorInsert, resultsInsert) {
+    const insertSql = 'INSERT INTO log (author, channel, message, created_at) VALUES (?,?,?,?)';
+    const values = [author, channel, messageContent, dateTime]
+    connection.query(insertSql, values, function (errorInsert, resultsInsert) {
         if (errorInsert) throw errorInsert;
+        mysqlClose(connection);
     });
-    mysqlClose(connection);
 }
 
 module.exports = { messageCount, log }
