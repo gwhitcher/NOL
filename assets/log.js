@@ -21,8 +21,8 @@ function messageCount(message) {
                 if (errorUpdate) throw errorUpdate;
             });
         }
-        mysqlClose(connection);
     });
+    mysqlClose(connection);
 }
 
 function log(message) {
@@ -37,6 +37,7 @@ function log(message) {
     connection.query(insertSql, function (errorInsert, resultsInsert) {
         if (errorInsert) throw errorInsert;
     });
+    mysqlClose(connection);
 }
 
 module.exports = { messageCount, log }
