@@ -1,4 +1,5 @@
 const { SlashCommandBuilder } = require('@discordjs/builders');
+const { cat_api_key } = require('../config.json');
 const axios = require('axios');
 
 module.exports = {
@@ -6,11 +7,11 @@ module.exports = {
         .setName('cat')
         .setDescription('Random cat picture.'),
     async execute(message) {
-        const url = 'https://aws.random.cat/meow';
+        const url = 'https://api.thecatapi.com/v1/images/search?api_key=' + cat_api_key;
         (async () => {
             try {
                 const response = await axios.get(url);
-                await message.reply(response.data.file.toString());
+                await message.reply(response.data[0].url.toString());
             } catch (error) {
                 console.log(error.response);
                 await message.reply({ content: 'No response.', ephemeral: true });
