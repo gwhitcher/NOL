@@ -28,7 +28,7 @@ function log(message) {
     let connection = mysqlConnect();
     const channel = message.channel.id;
     const messageContent = encodeURI(message.content);
-    const author = message.author.username + '#' + message.author.discriminator;
+    const author = message.author.username;
     const today = new Date();
     const date = today.getFullYear() + '-' + (today.getMonth() + 1) + '-' + today.getDate();
     const time = today.getHours() + ':' + today.getMinutes() + ':' + today.getSeconds();
