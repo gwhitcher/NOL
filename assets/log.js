@@ -5,7 +5,7 @@ function messageCount(message) {
     let connection = mysqlConnect();
     let messageCount = '';
     let messageID = '';
-    const author = message.author.username + '#' + message.author.discriminator;
+    const author = message.author.username;
     connection.query('SELECT * FROM message_count WHERE author = "' + author + '"', function (error, results, fields) {
         if (results.length === undefined || results.length === 0) {
             const insertSql = 'INSERT INTO message_count (author, message_count) VALUES (\'' + author + '\', \'1\')';
