@@ -30,6 +30,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `log` (
   `id` int NOT NULL,
   `author` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `channel` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `message` text COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL
@@ -44,6 +45,7 @@ CREATE TABLE `log` (
 CREATE TABLE `message_count` (
   `id` int NOT NULL,
   `author` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `author_id` varchar(32) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `message_count` int NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -62,6 +64,12 @@ ALTER TABLE `log`
 --
 ALTER TABLE `message_count`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Additional indexes
+--
+ALTER TABLE `log` ADD KEY `idx_log_author_id` (`author_id`);
+ALTER TABLE `message_count` ADD KEY `idx_message_count_author_id` (`author_id`);
 
 --
 -- AUTO_INCREMENT for dumped tables

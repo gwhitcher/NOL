@@ -6,7 +6,7 @@ Repository: github.com/gwhitcher/NOL
 
 // Require the necessary discord.js classes
 const fs = require('node:fs');
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const { token } = require('./config.json');
 const { messageCount, log } = require('./assets/log');
 
@@ -16,9 +16,11 @@ const client = new Client({
 		GatewayIntentBits.Guilds,
 		GatewayIntentBits.GuildMessages,
 		GatewayIntentBits.DirectMessages,
-		GatewayIntentBits.MessageContent
+		GatewayIntentBits.MessageContent,
+		GatewayIntentBits.GuildMembers
 	],
-	partials: ['MESSAGE', 'CHANNEL', 'REACTION']
+	// v14 requires Partials enum; Channel partial enables DMs
+	partials: [Partials.Channel]
 });
 client.commands = new Collection();
 const commandFiles = fs.readdirSync(__dirname + '/commands').filter(file => file.endsWith('.js'));
@@ -34,28 +36,32 @@ client.once('ready', () => {
 });
 
 // commands
-client.on('interactionCreate', async message => {
+client.on('interactionCreate', async interaction => {
+	if (!interaction.isChatInputCommand()) return;
 
-	if (!message.isCommand()) return;
-
-	const command = client.commands.get(message.commandName);
-
+	const command = client.commands.get(interaction.commandName);
 	if (!command) return;
 
 	try {
-		await command.execute(message);
+		await command.execute(interaction);
 	} catch (error) {
 		console.error(error);
-		await message.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		try {
+			await interaction.reply({ content: 'There was an error while executing this command!', ephemeral: true });
+		} catch (_) {
+			// ignore reply failures (e.g., already replied/deferred)
+		}
 	}
 });
 
 client.on('messageCreate', async message => {
-	if (message.author.bot) return;
-
-	//log
-	messageCount(message);
-	log(message);
+    if (message.author.bot) return;
+    try {
+        await messageCount(message);
+        await log(message);
+    } catch (e) {
+        console.error('Log error:', e);
+    }
 });
 
 // login

@@ -1,5 +1,5 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { mysqlConnect, mysqlClose } = require('../assets/mysql');
+const { SlashCommandBuilder } = require('discord.js');
+const { query } = require('../assets/mysql');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -12,9 +12,6 @@ module.exports = {
         ),
     async execute(message) {
 
-        // create mysql connection
-        let connection = mysqlConnect();
-
         //level array
         const int = 201;
         const levels = [];
@@ -25,20 +22,16 @@ module.exports = {
         }
 
         const number = message.options.getNumber('number') ?? 1;
-        const sql = 'SELECT * FROM message_count ORDER BY message_count DESC LIMIT ' + number;
-        connection.query(sql, function (error, results) {
-            if (error) throw error;
-            let topUsers = '';
-            for (let i = 0; i < results.length; i++) {
-                let closest = levels.reduce(function (prev, curr) {
-                    return (Math.abs(curr - results[i].message_count) < Math.abs(prev - results[i].message_count) ? curr : prev);
-                });
-                topUsers += results[i].author + ' | Level ' + levels.indexOf(closest) + ' | ' + results[i].message_count + ' Messages \n';
-            }
-            message.reply(topUsers);
-        });
+        const sql = 'SELECT author, message_count FROM message_count ORDER BY message_count DESC LIMIT ?';
+        const results = await query(sql, [number]);
+        let topUsers = '';
+        for (let i = 0; i < results.length; i++) {
+            const closest = levels.reduce(function (prev, curr) {
+                return (Math.abs(curr - results[i].message_count) < Math.abs(prev - results[i].message_count) ? curr : prev);
+            });
+            topUsers += results[i].author + ' | Level ' + levels.indexOf(closest) + ' | ' + results[i].message_count + ' Messages \n';
+        }
+        await message.reply(topUsers || 'No data.');
 
-        //close the mysql connection
-        mysqlClose(connection);
     },
 };

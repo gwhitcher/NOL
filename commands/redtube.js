@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
+const { SlashCommandBuilder } = require('discord.js');
 const axios = require('axios');
 const { nsfw } = require('../config.json');
 
@@ -12,6 +12,12 @@ module.exports = {
                 .setRequired(true)
         ),
     async execute(message) {
+        const nsfwChannelId = nsfw;
+        const target = message.client.channels.cache.get(nsfwChannelId);
+        if (!target || !('nsfw' in target) || !target.nsfw) {
+            await message.reply({ content: 'NSFW channel is not set correctly or not marked NSFW.', ephemeral: true });
+            return;
+        }
         const search = message.options.getString('search') ?? '';
         const url = 'https://api.redtube.com/?data=redtube.Videos.searchVideos&search=' + search + '&thumbsize=all&output=json';
         (async () => {
@@ -23,10 +29,10 @@ module.exports = {
                     let adultItem = '';
                     adultItem += 'VIDEO TITLE: ' + data[i].video.title + '\n';
                     adultItem += 'VIDEO URL: ' + data[i].video.url + '\n';
-                    await message.client.channels.cache.get(nsfw).send(adultItem);
+                    await target.send(adultItem);
                 }
             } catch (error) {
-                console.log(error.response);
+                console.error(error);
                 await message.reply({ content: 'No response.', ephemeral: true });
             }
         })();

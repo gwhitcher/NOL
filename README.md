@@ -23,16 +23,27 @@ NOL is an open source discord bot written using the [discord.js](https://discord
     - [ ] [Create a project on the Google Cloud Console](https://console.cloud.google.com)
     - [ ] Choose API's & Services and activate Google Custom Search & YouTube.
     - [ ] A key will be provided.  Update your config.json with the provided key.
-- [ ] Run node `deploy-commands.js` to register your commands.
-- [ ] If you ever need to clean up your commands, run node `delete-commands.js` to delete your commands.
-- [ ] Start the app by running `node app.js`.
+- [ ] Run DB migration once: `npm run migrate:db`.
+- [ ] Register your commands with `npm run deploy` (or `node deploy-commands.js`).
+- [ ] To clean up commands, run `npm run delete:commands` (or `node delete-commands.js`).
+- [ ] Start the app with `npm start` (or `node app.js`).
+
+Notes:
+- If you plan to run `/backfill`, enable "Server Members Intent" for the bot in the Discord Developer Portal and ensure the bot has the necessary privileged intent. The code requests `GuildMembers` intent.
     
 ## Commands
 * /level - Display your level.
 * /top - Top users.
+* /health - Quick health check.
+* /backfill - Admin-only: backfills author_id for message_count.
+* /ephemeral-default [value] - View/set default ephemeral replies per server (admin).
 * /wiki X - Search Wikipedia.
-* /google X - Search Google.
-* /youtube X - Search YouTube.
+* /google X [count] [page] [ephemeral] - Search Google (count 1-5, page 1-10).
+* /youtube X [count] [page] [ephemeral] - Search YouTube (count 1-5, page 1-5).
+* /wiki X [ephemeral] - Search Wikipedia.
+* /dog [ephemeral] - Random dog picture.
+* /cat [ephemeral] - Random cat picture.
+* /random [ephemeral] - Random entry from config.
 * /cat - Random cat picture.
 * /dog - Random dog picture.
 * /redtube X - Search redtube. (NSFW ONLY)

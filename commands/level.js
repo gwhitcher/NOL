@@ -1,14 +1,11 @@
-const { SlashCommandBuilder } = require('@discordjs/builders');
-const { mysqlConnect, mysqlClose } = require('../assets/mysql');
+const { SlashCommandBuilder } = require('discord.js');
+const { query } = require('../assets/mysql');
 
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('level')
         .setDescription('Your level based on the amount of your messages.'),
-    execute(message) {
-        // create mysql connection
-        let connection = mysqlConnect();
-
+    async execute(message) {
         //level array
         const int = 201;
         const levels = [];
@@ -19,18 +16,14 @@ module.exports = {
         }
 
         // get message count for user
-        const author = message.user.tag;
-        const sql = 'SELECT * FROM message_count WHERE author = "' + author + '"';
-        connection.query(sql, function (error, results) {
-            if (error) throw error;
-            let message_count = results[0].message_count;
-            const closest = levels.reduce(function (prev, curr) {
-                return (Math.abs(curr - message_count) < Math.abs(prev - message_count) ? curr : prev);
-            });
-            message.reply(author + ' | Level ' + levels.indexOf(closest) + ' | ' + message_count + ' Messages');
+        const author = message.user.username;
+        const authorId = message.user.id;
+        const sql = 'SELECT message_count FROM message_count WHERE author_id = ? OR author = ? ORDER BY author_id IS NULL LIMIT 1';
+        const results = await query(sql, [authorId, author]);
+        const message_count = results?.[0]?.message_count ?? 0;
+        const closest = levels.reduce(function (prev, curr) {
+            return (Math.abs(curr - message_count) < Math.abs(prev - message_count) ? curr : prev);
         });
-
-        //close the mysql connection
-        mysqlClose(connection);
+        await message.reply(author + ' | Level ' + levels.indexOf(closest) + ' | ' + message_count + ' Messages');
     },
 };
